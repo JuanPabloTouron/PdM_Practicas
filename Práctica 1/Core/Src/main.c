@@ -88,7 +88,11 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  uint32_t time = 200;
+  uint16_t T[] = {400,1000}; //Array de períodos
+  float DC = 0.5; //Duty cycle
+  uint16_t time = (uint16_t)T[0]*DC;
+  int contador = 0;
+  int i=0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -104,12 +108,12 @@ int main(void)
 	  HAL_Delay(time);
 
 	  if (!HAL_GPIO_ReadPin(B1_GPIO_Port, B1_Pin)){
-		  if (time == 200) {
-			  time = 500;
+		  contador++;
+		  if (contador == sizeof(T)){
+			  contador = 0;
 		  }
-		  else{
-			  time = 200;
-		  }
+		  i = contador%sizeof(T);
+		  time = (uint16_t)T[i]*DC;
 	  }
 
   }
